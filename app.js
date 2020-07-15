@@ -35,8 +35,10 @@ const tasks = [
   // UI elements
   const fragment = document.createElement("fragment");
   const tasksList = document.querySelector(".list-group");
+  const form = document.forms["addTask"];
+  const taskTitle = form.elements["title"];
+  const taskBody = form.elements["body"];
 
-  // Object of tasks
   const tasksObj = arrOfTasks.reduce((acc, task) => {
     acc[task._id] = task;
     return acc;
@@ -84,5 +86,37 @@ const tasks = [
     li.append(taskBody);
     li.append(deleteBtn);
     return li;
+  }
+
+  // addition of new task
+
+  form.addEventListener("submit", onFormSubmitHandler);
+
+  function onFormSubmitHandler(e) {
+    e.preventDefault();
+
+    const titleValue = title.value;
+    const bodyValue = body.value;
+
+    if (!titleValue || !bodyValue) {
+      alert("Please, enter title and body!");
+      return;
+    }
+
+    const newTask = createNewTask(titleValue, bodyValue);
+    const li = taskTemplate(newTask);
+    tasksList.insertAdjacentElement("afterbegin", li);
+    form.reset();
+  }
+
+  function createNewTask(title, body) {
+    const task = {
+      _id: `task-${Math.random()}`,
+      completed: false,
+      title,
+      body
+    };
+    tasksObj[task._id] = task;
+    return { ...task };
   }
 })(tasks);
