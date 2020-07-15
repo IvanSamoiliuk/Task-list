@@ -32,5 +32,57 @@ const tasks = [
 ];
 
 (function (arrOfTasks) {
-  
+  // UI elements
+  const fragment = document.createElement("fragment");
+  const tasksList = document.querySelector(".list-group");
+
+  // Object of tasks
+  const tasksObj = arrOfTasks.reduce((acc, task) => {
+    acc[task._id] = task;
+    return acc;
+  }, {});
+
+  renderTasks(tasksObj);
+
+  // rendering of all tasks
+  function renderTasks(tasks) {
+    if (!tasks) {
+      console.error("Передайте список задач");
+      return;
+    }
+
+    Object.values(tasks).forEach((task) => {
+      fragment.append(taskTemplate(task));
+    });
+
+    tasksList.append(fragment);
+  }
+
+  // task item generation
+  function taskTemplate({ _id, title, body }) {
+    const taskTitle = document.createElement("span");
+    taskTitle.textContent = title;
+    taskTitle.style.fontWeight = "bold";
+
+    const taskBody = document.createElement("p");
+    taskBody.classList.add("mt-2", "w-100");
+    taskBody.textContent = body;
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.classList.add("btn", "btn-danger", "ml-auto", "delete-btn");
+    deleteBtn.textContent = "Delete";
+
+    const li = document.createElement("li");
+    li.classList.add(
+      "list-group-item",
+      "d-flex",
+      "align-items-center",
+      "flex-wrap",
+      "mt-2"
+    );
+    li.append(taskTitle);
+    li.append(taskBody);
+    li.append(deleteBtn);
+    return li;
+  }
 })(tasks);
