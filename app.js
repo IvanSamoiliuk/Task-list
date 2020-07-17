@@ -85,7 +85,6 @@ const tasks = [
     li.append(taskTitle);
     li.append(taskBody);
     li.append(deleteBtn);
-    li.setAttribute("data-task-id", _id);
     return li;
   }
 
