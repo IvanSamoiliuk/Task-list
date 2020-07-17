@@ -85,6 +85,7 @@ const tasks = [
     li.append(taskTitle);
     li.append(taskBody);
     li.append(deleteBtn);
+    li.setAttribute("data-task-id", _id);
     return li;
   }
 
@@ -114,9 +115,10 @@ const tasks = [
       _id: `task-${Math.random()}`,
       completed: false,
       title,
-      body
+      body,
     };
     tasksObj[task._id] = task;
     return { ...task };
   }
+
 })(tasks);
