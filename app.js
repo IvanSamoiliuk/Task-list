@@ -85,6 +85,7 @@ const tasks = [
     li.append(taskTitle);
     li.append(taskBody);
     li.append(deleteBtn);
+    li.setAttribute("data-task-id", _id);
     return li;
   }
 
@@ -120,4 +121,31 @@ const tasks = [
     return { ...task };
   }
 
+  // deleting of task
+
+  tasksList.addEventListener("click", onDeleteHandler);
+
+  function onDeleteHandler(event) {
+    if (event.target.classList.contains("delete-btn")) {
+      const parentLi = event.target.closest("[data-task-id]");
+      const taskId = parentLi.dataset.taskId;
+      const confirmed = deleteFromTasksObj(taskId);
+      deleteFromHTML(confirmed, parentLi);
+    }
+  }
+
+  function deleteFromTasksObj(id) {
+    const { title } = tasksObj[id];
+    const isConfirm = confirm(
+      `Are you sure you want to delete the task: '${title}'?`
+    );
+    if (!isConfirm) return isConfirm;
+    delete tasksObj[id];
+    return isConfirm;
+  }
+
+  function deleteFromHTML(isConfirm, el) {
+    if (!isConfirm) return;
+    el.remove();
+  }
 })(tasks);
