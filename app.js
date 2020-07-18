@@ -6,29 +6,29 @@ const tasks = [
       "Occaecat non ea quis occaecat ad culpa amet deserunt incididunt elit fugiat pariatur. Exercitation commodo culpa in veniam proident laboris in. Excepteur cupidatat eiusmod dolor consectetur exercitation nulla aliqua veniam fugiat irure mollit. Eu dolor dolor excepteur pariatur aute do do ut pariatur consequat reprehenderit deserunt.\r\n",
     title: "Eu ea incididunt sunt consectetur fugiat non.",
   },
-  {
-    _id: "5d2ca9e29c8a94095c1288e0",
-    completed: false,
-    body:
-      "Aliquip cupidatat ex adipisicing veniam do tempor. Lorem nulla adipisicing et esse cupidatat qui deserunt in fugiat duis est qui. Est adipisicing ipsum qui cupidatat exercitation. Cupidatat aliqua deserunt id deserunt excepteur nostrud culpa eu voluptate excepteur. Cillum officia proident anim aliquip. Dolore veniam qui reprehenderit voluptate non id anim.\r\n",
-    title:
-      "Deserunt laborum id consectetur pariatur veniam occaecat occaecat tempor voluptate pariatur nulla reprehenderit ipsum.",
-  },
-  {
-    _id: "5d2ca9e2e03d40b3232496aa7",
-    completed: true,
-    body:
-      "Occaecat non ea quis occaecat ad culpa amet deserunt incididunt elit fugiat pariatur. Exercitation commodo culpa in veniam proident laboris in. Excepteur cupidatat eiusmod dolor consectetur exercitation nulla aliqua veniam fugiat irure mollit. Eu dolor dolor excepteur pariatur aute do do ut pariatur consequat reprehenderit deserunt.\r\n",
-    title: "Eu ea incididunt sunt consectetur fugiat non.",
-  },
-  {
-    _id: "5d2ca9e29c8a94095564788e0",
-    completed: false,
-    body:
-      "Aliquip cupidatat ex adipisicing veniam do tempor. Lorem nulla adipisicing et esse cupidatat qui deserunt in fugiat duis est qui. Est adipisicing ipsum qui cupidatat exercitation. Cupidatat aliqua deserunt id deserunt excepteur nostrud culpa eu voluptate excepteur. Cillum officia proident anim aliquip. Dolore veniam qui reprehenderit voluptate non id anim.\r\n",
-    title:
-      "Deserunt laborum id consectetur pariatur veniam occaecat occaecat tempor voluptate pariatur nulla reprehenderit ipsum.",
-  },
+  // {
+  //   _id: "5d2ca9e29c8a94095c1288e0",
+  //   completed: false,
+  //   body:
+  //     "Aliquip cupidatat ex adipisicing veniam do tempor. Lorem nulla adipisicing et esse cupidatat qui deserunt in fugiat duis est qui. Est adipisicing ipsum qui cupidatat exercitation. Cupidatat aliqua deserunt id deserunt excepteur nostrud culpa eu voluptate excepteur. Cillum officia proident anim aliquip. Dolore veniam qui reprehenderit voluptate non id anim.\r\n",
+  //   title:
+  //     "Deserunt laborum id consectetur pariatur veniam occaecat occaecat tempor voluptate pariatur nulla reprehenderit ipsum.",
+  // },
+  // {
+  //   _id: "5d2ca9e2e03d40b3232496aa7",
+  //   completed: true,
+  //   body:
+  //     "Occaecat non ea quis occaecat ad culpa amet deserunt incididunt elit fugiat pariatur. Exercitation commodo culpa in veniam proident laboris in. Excepteur cupidatat eiusmod dolor consectetur exercitation nulla aliqua veniam fugiat irure mollit. Eu dolor dolor excepteur pariatur aute do do ut pariatur consequat reprehenderit deserunt.\r\n",
+  //   title: "Eu ea incididunt sunt consectetur fugiat non.",
+  // },
+  // {
+  //   _id: "5d2ca9e29c8a94095564788e0",
+  //   completed: false,
+  //   body:
+  //     "Aliquip cupidatat ex adipisicing veniam do tempor. Lorem nulla adipisicing et esse cupidatat qui deserunt in fugiat duis est qui. Est adipisicing ipsum qui cupidatat exercitation. Cupidatat aliqua deserunt id deserunt excepteur nostrud culpa eu voluptate excepteur. Cillum officia proident anim aliquip. Dolore veniam qui reprehenderit voluptate non id anim.\r\n",
+  //   title:
+  //     "Deserunt laborum id consectetur pariatur veniam occaecat occaecat tempor voluptate pariatur nulla reprehenderit ipsum.",
+  // },
 ];
 
 (function (arrOfTasks) {
@@ -38,6 +38,9 @@ const tasks = [
   const form = document.forms["addTask"];
   const taskTitle = form.elements["title"];
   const taskBody = form.elements["body"];
+  const card = document.querySelector(".card");
+  const emptyTaskListMessage = document.createElement("div");
+  card.insertAdjacentElement("afterend", emptyTaskListMessage);
 
   const tasksObj = arrOfTasks.reduce((acc, task) => {
     acc[task._id] = task;
@@ -52,6 +55,8 @@ const tasks = [
       console.error("Передайте список задач");
       return;
     }
+
+    isEmptyTaskList(tasks);
 
     Object.values(tasks).forEach((task) => {
       fragment.append(taskTemplate(task));
@@ -118,6 +123,7 @@ const tasks = [
       body,
     };
     tasksObj[task._id] = task;
+    isEmptyTaskList(tasksObj);
     return { ...task };
   }
 
@@ -141,6 +147,7 @@ const tasks = [
     );
     if (!isConfirm) return isConfirm;
     delete tasksObj[id];
+    isEmptyTaskList(tasksObj);
     return isConfirm;
   }
 
@@ -148,4 +155,15 @@ const tasks = [
     if (!isConfirm) return;
     el.remove();
   }
+
+  // check for empty list
+
+  function isEmptyTaskList(tasks) {
+    if (Object.keys(tasks).length > 0) {
+      emptyTaskListMessage.textContent = "";
+    } else {
+      emptyTaskListMessage.textContent = "Empty tasklist!";
+    }
+  }
+  
 })(tasks);
