@@ -1,7 +1,7 @@
 const tasks = [
   {
     _id: "5d2ca9e2e03d40b326596aa7",
-    completed: true,
+    completed: false,
     body:
       "Occaecat non ea quis occaecat ad culpa amet deserunt incididunt elit fugiat pariatur. Exercitation commodo culpa in veniam proident laboris in. Excepteur cupidatat eiusmod dolor consectetur exercitation nulla aliqua veniam fugiat irure mollit. Eu dolor dolor excepteur pariatur aute do do ut pariatur consequat reprehenderit deserunt.\r\n",
     title: "Eu ea incididunt sunt consectetur fugiat non.",
@@ -79,6 +79,10 @@ const tasks = [
     deleteBtn.classList.add("btn", "btn-danger", "ml-auto", "delete-btn");
     deleteBtn.textContent = "Delete";
 
+    const completeBtn = document.createElement("button");
+    completeBtn.classList.add("btn", "btn-success", "complete-btn");
+    completeBtn.textContent = "Complete";
+
     const li = document.createElement("li");
     li.classList.add(
       "list-group-item",
@@ -89,6 +93,7 @@ const tasks = [
     );
     li.append(taskTitle);
     li.append(taskBody);
+    li.append(completeBtn);
     li.append(deleteBtn);
     li.setAttribute("data-task-id", _id);
     return li;
@@ -165,5 +170,26 @@ const tasks = [
       emptyTaskListMessage.textContent = "Empty tasklist!";
     }
   }
-  
+
+  // mark completed task
+
+  tasksList.addEventListener("click", onCompleteHandler);
+
+  function onCompleteHandler(event) {
+    if (event.target.classList.contains("complete-btn")) {
+      const parentLi = event.target.closest("[data-task-id]");
+      const taskId = parentLi.dataset.taskId;
+      const isCompleted = (tasksObj[taskId].completed = !tasksObj[taskId]
+        .completed);
+      markCompletedTask(isCompleted, parentLi);
+    }
+  }
+
+  function markCompletedTask(isComplete, el) {
+    if (isComplete) {
+      el.style.backgroundColor = "gray";
+    } else {
+      el.style.backgroundColor = "white";
+    }
+  }
 })(tasks);
